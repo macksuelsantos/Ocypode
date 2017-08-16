@@ -32,3 +32,17 @@ dependencies {
     compile 'org.roboguice:roboguice:3.0.1'
     provided 'org.roboguice:roboblender:3.0.1'
 }
+
+apply plugin: 'maven'
+
+version = '1.0.0'
+group = 'com.ocypode.core'
+
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: 'file://' + rootProject.projectDir + '/repo/')
+        pom {
+            artifactId = 'library'
+        }
+    }
+}
