@@ -1,28 +1,27 @@
-package com.ocypode.core.activity.robo.fragment;
+package com.ocypode.core.activity.robo;
 
 import android.app.Service;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 
 import com.ocypode.core.activity.IResultCallbackActivity;
 import com.ocypode.core.component.delegate.IStartActivityDelegate;
 import com.ocypode.core.component.delegate.StartActivityDelegate;
-import com.ocypode.core.component.delegate.adaptor.StartFragmentAdaptor;
+import com.ocypode.core.component.delegate.adaptor.StartActivityAdaptor;
 
-import roboguice.fragment.RoboFragment;
+abstract public class AbstractFragmentActivity extends FragmentActivity implements IStartActivityDelegate {
 
-abstract public class AbstractRoboFragment extends RoboFragment implements IStartActivityDelegate {
-	
 	private IStartActivityDelegate mStartActivityDelegate;
 
 	@Override
-	public void onCreate(Bundle arg0) {
-		super.onCreate(arg0);		
-
-		mStartActivityDelegate = new StartActivityDelegate(new StartFragmentAdaptor(this));
+	protected void onCreate(Bundle arg0) {
+		super.onCreate(arg0);
+		
+		mStartActivityDelegate = new StartActivityDelegate(new StartActivityAdaptor(this));
 	}	
 	
 	@Override
@@ -87,18 +86,7 @@ abstract public class AbstractRoboFragment extends RoboFragment implements IStar
 	public void goToActivity(String action) {
 		mStartActivityDelegate.goToActivity(action);
 	}
-	
-	protected void addFragment(int fragmentId, Fragment fragment) {
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();		
-		transaction.replace(fragmentId, fragment).commit();
-	}
-	
-	protected void addFragment(int fragmentId, Fragment fragment, String tag) {
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-	    ft.replace(fragmentId, fragment, tag);
-	    ft.commit();
-	}
-	
+
 	@Override
 	public void openBrowser(String url) {
 		mStartActivityDelegate.openBrowser(url);
@@ -132,10 +120,20 @@ abstract public class AbstractRoboFragment extends RoboFragment implements IStar
 		mStartActivityDelegate.stopService(cl);
 	}
 	
+	protected void replaceFragment(int fragmentId, Fragment fragment) {
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();		
+		transaction.replace(fragmentId, fragment).commit();
+	}
+	
+	protected void replaceFragment(int fragmentId, Fragment fragment, String tag) {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+	    ft.replace(fragmentId, fragment, tag);
+	    ft.commit();
+	}
+	
 	@Override
 	public void bindService(Service service, Class<?> serviceClass,
 			ServiceConnection serviceConnection) {
 		mStartActivityDelegate.bindService(service, serviceClass, serviceConnection);
 	}
-
 }

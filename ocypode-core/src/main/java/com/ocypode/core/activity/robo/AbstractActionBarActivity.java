@@ -6,16 +6,15 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 
 import com.ocypode.core.activity.IResultCallbackActivity;
 import com.ocypode.core.component.delegate.IStartActivityDelegate;
 import com.ocypode.core.component.delegate.StartActivityDelegate;
 import com.ocypode.core.component.delegate.adaptor.StartActivityAdaptor;
 
-import roboguice.activity.RoboActionBarActivity;
 
-
-abstract public class AbstractRoboActionBarActivity extends RoboActionBarActivity implements IStartActivityDelegate {
+abstract public class AbstractActionBarActivity extends AppCompatActivity implements IStartActivityDelegate {
 
     private IStartActivityDelegate mStartActivityDelegate;
 

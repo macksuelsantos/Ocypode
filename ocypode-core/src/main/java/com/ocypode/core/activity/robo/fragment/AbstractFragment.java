@@ -1,4 +1,4 @@
-package com.ocypode.core.activity.robo;
+package com.ocypode.core.activity.robo.fragment;
 
 import android.app.Service;
 import android.content.Intent;
@@ -10,19 +10,17 @@ import android.support.v4.app.FragmentTransaction;
 import com.ocypode.core.activity.IResultCallbackActivity;
 import com.ocypode.core.component.delegate.IStartActivityDelegate;
 import com.ocypode.core.component.delegate.StartActivityDelegate;
-import com.ocypode.core.component.delegate.adaptor.StartActivityAdaptor;
+import com.ocypode.core.component.delegate.adaptor.StartFragmentAdaptor;
 
-import roboguice.activity.RoboFragmentActivity;
-
-abstract public class AbstractRoboFragmentActivity extends RoboFragmentActivity implements IStartActivityDelegate {
-
+abstract public class AbstractFragment extends Fragment implements IStartActivityDelegate {
+	
 	private IStartActivityDelegate mStartActivityDelegate;
 
 	@Override
-	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
-		
-		mStartActivityDelegate = new StartActivityDelegate(new StartActivityAdaptor(this));
+	public void onCreate(Bundle arg0) {
+		super.onCreate(arg0);		
+
+		mStartActivityDelegate = new StartActivityDelegate(new StartFragmentAdaptor(this));
 	}	
 	
 	@Override
@@ -87,7 +85,18 @@ abstract public class AbstractRoboFragmentActivity extends RoboFragmentActivity 
 	public void goToActivity(String action) {
 		mStartActivityDelegate.goToActivity(action);
 	}
-
+	
+	protected void addFragment(int fragmentId, Fragment fragment) {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();		
+		transaction.replace(fragmentId, fragment).commit();
+	}
+	
+	protected void addFragment(int fragmentId, Fragment fragment, String tag) {
+		FragmentTransaction ft = getFragmentManager().beginTransaction();
+	    ft.replace(fragmentId, fragment, tag);
+	    ft.commit();
+	}
+	
 	@Override
 	public void openBrowser(String url) {
 		mStartActivityDelegate.openBrowser(url);
@@ -121,20 +130,10 @@ abstract public class AbstractRoboFragmentActivity extends RoboFragmentActivity 
 		mStartActivityDelegate.stopService(cl);
 	}
 	
-	protected void replaceFragment(int fragmentId, Fragment fragment) {
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();		
-		transaction.replace(fragmentId, fragment).commit();
-	}
-	
-	protected void replaceFragment(int fragmentId, Fragment fragment, String tag) {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-	    ft.replace(fragmentId, fragment, tag);
-	    ft.commit();
-	}
-	
 	@Override
 	public void bindService(Service service, Class<?> serviceClass,
 			ServiceConnection serviceConnection) {
 		mStartActivityDelegate.bindService(service, serviceClass, serviceConnection);
 	}
+
 }

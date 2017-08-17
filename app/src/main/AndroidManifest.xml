@@ -10,22 +10,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <!-- Guice configuration -->
-        <meta-data
-            android:name="roboguice.annotations.packages"
-            android:value="com.ocypode.sample" />
-        <meta-data
-            android:name="roboguice.modules"
-            android:value="com.ocypode.sample.VolleyFactoryModule" />
-
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".HomeActivity"/>
     </application>
 
 </manifest>
